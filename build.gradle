@@ -4,6 +4,7 @@ buildscript {
 
 apply plugin: "eclipse"
 apply plugin: "idea"
+apply plugin: 'maven'
 
 apply from: "version.gradle"
 
@@ -28,8 +29,31 @@ subprojects {
       forkEvery 1
       maxParallelForks 4
 
-      beforeTest { descriptor ->
+      beforeTest {
+        descriptor ->
         logger.lifecycle("Running: " + descriptor)
+      }
+    }
+  }
+
+  // ./gradlew publishMavenPublicationToNexus
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        artifact("build/libs/"+project.name+"-"+rootProject.version+".jar") {
+          extension 'jar'
+        }
+      }
+    }
+
+    repositories {
+      maven {
+        name 'Nexus'
+        url = version.endsWith('SNAPSHOT') ? 'https://nexus.enercoop.org/repository/maven-snapshots/' : 'https://nexus.enercoop.org/repository/maven-releases/'
+        credentials {
+          username "laurent.commeau"
+          password "ailie9Wai;"
+        }
       }
     }
   }

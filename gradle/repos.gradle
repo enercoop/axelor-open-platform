@@ -2,6 +2,9 @@ def repos = {
   mavenCentral()
   maven { url 'https://plugins.gradle.org/m2/' }
   maven {
+    url 'https://nexus.enercoop.org/repository/maven-public/'
+  }
+  maven {
     url 'https://repository.axelor.com/nexus/repository/maven-public/'
   }
 }
